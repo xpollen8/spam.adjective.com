@@ -1,0 +1,237 @@
+#define color1 333333
+#define color2 333366
+#define color3 333399
+#define color4 3333cc
+#define color5 3333ff
+#define color6 336633
+#define color7 336666
+#define color8 336699
+#define color9 3366cc
+#define color10 3366ff
+#define color11 339933
+#define color12 339966
+#define color13 339999
+#define color14 3399cc
+#define color15 3399ff
+#define color16 33cc33
+#define color17 33cc66
+#define color18 33cc99
+#define color19 33cccc
+#define color20 33ccff
+#define color21 33ff33
+#define color22 33ff66
+#define color23 33ff99
+#define color24 33ffcc
+#define color25 33ffff
+#define color26 663333
+#define color27 663366
+#define color28 663399
+#define color29 6633cc
+#define color30 6633ff
+#define color31 666633
+#define color32 666666
+#define color33 666699
+#define color34 6666cc
+#define color35 6666ff
+#define color36 669933
+#define color37 669966
+#define color38 669999
+#define color39 6699cc
+#define color40 6699ff
+#define color41 66cc33
+#define color42 66cc66
+#define color43 66cc99
+#define color44 66cccc
+#define color45 66ccff
+#define color46 66ff33
+#define color47 66ff66
+#define color48 66ff99
+#define color49 66ffcc
+#define color50 66ffff
+#define color51 993333
+#define color52 993366
+#define color53 993399
+#define color54 9933cc
+#define color55 9933ff
+#define color56 996633
+#define color57 996666
+#define color58 996699
+#define color59 9966cc
+#define color60 9966ff
+#define color61 999933
+#define color62 999966
+#define color63 999999
+#define color64 9999cc
+#define color65 9999ff
+#define color66 99cc33
+#define color67 99cc66
+#define color68 99cc99
+#define color69 99cccc
+#define color70 99ccff
+#define color71 99ff33
+#define color72 99ff66
+#define color73 99ff99
+#define color74 99ffcc
+#define color75 99ffff
+#define color76 cc3333
+#define color77 cc3366
+#define color78 cc3399
+#define color79 cc33cc
+#define color80 cc33ff
+#define color81 cc6633
+#define color82 cc6666
+#define color83 cc6699
+#define color84 cc66cc
+#define color85 cc66ff
+#define color86 cc9933
+#define color87 cc9966
+#define color88 cc9999
+#define color89 cc99cc
+#define color90 cc99ff
+#define color91 cccc33
+#define color92 cccc66
+#define color93 cccc99
+#define color94 cccccc
+#define color95 ccccff
+#define color96 ccff33
+#define color97 ccff66
+#define color98 ccff99
+#define color99 ccffcc
+#define color100 ccffff
+#define color101 ff3333
+#define color102 ff3366
+#define color103 ff3399
+#define color104 ff33cc
+#define color105 ff33ff
+#define color106 ff6633
+#define color107 ff6666
+#define color108 ff6699
+#define color109 ff66cc
+#define color110 ff66ff
+#define color111 ff9933
+#define color112 ff9966
+#define color113 ff9999
+#define color114 ff99cc
+#define color115 ff99ff
+#define color116 ffcc33
+#define color117 ffcc66
+#define color118 ffcc99
+#define color119 ffcccc
+#define color120 ffccff
+#define color121 ffff33
+#define color122 ffff66
+#define color123 ffff99
+#define color124 ffffcc
+#define color125 ffffff
+
+#define	filterSubject(subject)
+	${mapStr(david, spamee_firstname,
+		${mapStr(whittemore, spamee_lastname,
+			${mapStr(adjective.com, spamee_domain,
+				${mapStr(garageband.com, spamee_domain,
+					${mapStr(del, spamee_user,
+						${subject}
+					)}
+				)}
+			)}
+		)}
+	)}
+
+#define	display(prefix)
+	${define(color, ${color${random(125)}})}
+#live	if (makeArray(p, ${literalizeCommas(${${prefix}->subject})}))
+#live	if (defined(${prefix}->sender))
+<font color="#${color}">From: ${mapStr(@, \@, ${stripHTML(${${prefix}->sender})})}</font><br>
+<font color="#${color}">Date: ${stripHTML(${${prefix}->dtcreated})}</font><br>
+#live	endif
+<font color="#${color}">Subject: </font>
+#live	while (x = p[*])
+#live	if (inList(${keywords}, ${p[${x}]}))
+<u><b><font size=+1 color="#ffffff">${filterSubject(subject=${stripHTML(${p[${x}]})})}</font></b></u>
+#live	else
+<font color="#${color}">${filterSubject(subject=${stripHTML(${p[${x}]})})}</font>
+#live	endif
+#live	endwhile
+#live	endif
+
+#define	queryRecent
+	select spam_id, sender, subject, dtcreated from spam where spam_id > ${eval(${sp->cnt} - 5)} order by spam_id desc
+#define	queryRandom
+	select spam_id, sender, subject, dtcreated from spam order by RAND() limit 5
+#define	queryKeywords
+	select spam_id, sender, subject, dtcreated from spam where match(sender) against('${keywords}') limit 5
+
+#define	queryWhich
+#live	if (defined(keywords))
+	${queryKeywords}
+#live	else if (defined(recent))
+	${queryRecent}
+#live	else
+	${queryRandom}
+#live	endif
+
+#define	index.html
+<head>
+<title>
+A little slice of SPAM for you
+</title>
+</head>
+#live	if (getval(page) = index.html)
+<body bgcolor="#000000" vlink="#ffffff">
+#live	if (sql(sp:select max(spam_id) as cnt from spam))
+#live	endif
+#live	if (sql(today:select count(*) as cnt from spam where to_days(now()) = to_days(day))))
+#live	endif
+#live	if (sql(spam:${queryWhich}) limit 5))
+	<b>
+	<font color="#ffffff">
+	I'd like to share some of the ${prettyNumber(${sp->cnt})} spam messages
+	I've received..<br>
+#live	if (getnum(today->cnt) > 10)
+	(of which ${today->cnt} unique subjects so far today are new).
+#live	endif
+	</font>
+	</b>
+	<blockquote>
+#live	while (s = spam[*]->subject)
+	<font color="#ffffff">#${prettyNumber(${spam[${s}]->spam_id})}:</font>
+	<br>
+	${display(prefix=spam[${s}])}<p>
+#live	endwhile
+	</blockquote>
+	<font color="#ffffff">
+	<b><a href="/htdb/spam"><font color="#ffffff">Gimme another random serving, please</font></a></b>
+	<p>
+	-or-
+	<p>
+	<b><a href="/htdb/spam?${encrypt(recent=yup)}"><font color="#ffffff">Just the most recent additions</font></a></b>
+	<p>
+	-or-
+	<p>
+	<form action="${this_page}" method="post">
+	<input type="text" name="keywords" value="${resolve(keywords)}" size=20>
+	<input type="submit" name="query" value="Find These Keywords">
+	</form>
+	</font>
+
+#live	else
+	NO SPAM FOR YOU
+#live	endif
+${footer}
+#live	endif
+
+#define	sqlSpam(file)
+	insert into spam set
+	subject='${filterProgramArguments(${substr(9, 255, ${system(grep Subject: ${file} | head -1)})})}',
+	sender='${filterProgramArguments(${substr(6, 255, ${system(grep From: ${file} | head -1)})})}',
+	day=now(),
+	dtcreated=now()
+
+#define	add.html
+#live	if (getval(page) = add.html)
+##live	if (sql(${sqlSpam(file=/tmp/newspam)}))
+#	OK
+##live	else
+#	NO
+##live	endif
+#live	endif

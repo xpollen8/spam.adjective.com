@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="spams.js"></script>
+		<script type="text/javascript">
+			function formatNumber(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+			function newspam() {
+				document.getElementById('count').innerHTML = formatNumber(spams.length);
+				const colorMap = [ '33', '66', '99', 'cc', 'ff' ];
+				const randHex = () => colorMap[Math.floor(Math.random() * colorMap.length)];
+				for (var i = 0 ; i < 5 ; i++) {
+					const color=randHex() + randHex() + randHex();
+					const idx = Math.floor((Math.random() * spams.length));
+					const { s, d, x } = spams[idx];
+					document.getElementById(`spam${i + 1}`).innerHTML = `
+<div style="background: #000; margin: 10px; text-align: left; padding: 10px 20px; color: #${color};"><h2 style="color: white;"> #${formatNumber(idx + 1)}</h2>
+Subject: ${s}<br />
+Date: ${d}<br />` + (x ? `From: ${x}` : '') + '</div>';
+				}
+			}
+		</script>
+	</head>
+	<body onload="newspam()" style='background: #333;'>
+		<h1 style="color: #fff;">I'd like to share some of the <span id='count'></span> spam messages I've received..</h1>
+		<a style="color: #ccf;" href="#" onclick="newspam();">gimme more</a>
+		<p />
+		<div id='spam1' onclick="newspam();"> sry.. need javascript to see this useless crap.  </div>
+		<div id='spam2' onclick="newspam();"> sry.. need javascript to see this useless crap.  </div>
+		<div id='spam3' onclick="newspam();"> sry.. need javascript to see this useless crap.  </div>
+		<div id='spam4' onclick="newspam();"> sry.. need javascript to see this useless crap.  </div>
+		<div id='spam5' onclick="newspam();"> sry.. need javascript to see this useless crap.  </div>
+		<p />
+		<a style="color: #ccf;" href="#" onclick="newspam();">gimme more</a>
+		<p />
+		<div id="fbar" style="clear: both; background-color: #e6e6e6; max-width: 100%; padding: 3px; margin: 0px; font-family: times; color: #000000; text-align: left;">
+		<b>Visitors' comments for this page</b>
+		</div>
+		<div id="feedback" style="background-color: #efefef; max-width: 100%; padding: 3px; margin: 0px; font-family: times;">
+			<ul style="list-style: none; color: #000000; text-align: left; margin-left: -10px;">
+				<li>
+					<b>OI</b>
+						<br>
+						we...@...we
+						- ew
+						<br>
+						15Oct2020 8:42 AM
+						(4 years 152 days  ago)
+						<blockquote>
+							fuck
+						</blockquote>
+					</li>
+					<li>
+						<b>spam search</b>
+						<br>
+						zol...@...ac.ca
+						- Toronto, ON, Canada
+						<br>
+						14Jun2005 7:06 PM
+						(19 years 279 days  ago)
+						<blockquote>
+							Hey Dave
+					<br/>
+
+					<br/>
+					I haven&#39;t been here for a while, so I decided to look around.  Love your random spam page.  I had made something similar a while ago, except a little more graphical:
+					<br/>
+
+					<br/>
+					http://www.dulac.ca/bin/spamart
+					<br/>
+
+					<br/>
+					Waste about a minute of your life and see.  
+					<br/>
+
+					<br/>
+					How *are* you?  Haven&#39;t mailed you in ages!  What&#39;s news?
+					<br/>
+
+					<br/>
+					Z.
+					<br/>
+
+					<br/>
+					(above e-mail is real btw&#41;.
+						</blockquote>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
